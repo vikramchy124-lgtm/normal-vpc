@@ -4,10 +4,13 @@ resource "aws_key_pair" "terra_project" {
 }
 
 resource "aws_instance" "terra-project" {
-  ami                    = "ami-0b6d9d3d33ba97d99"
-  instance_type          = "t3.micro"
-  key_name               = aws_key_pair.terra_project.key_name
-  vpc_security_group_ids = [aws_security_group.terra_project_sg.id]
+  ami                         = var.ec2_ami
+  instance_type               = var.ec2_instance_type
+  subnet_id                   = module.vpc.public_subnets[0]
+  associate_public_ip_address  = true
+  key_name                    = aws_key_pair.terra_project.key_name
+  vpc_security_group_ids      = [aws_security_group.terra_project_sg.id]
+  user_data                   = file("${path.module}/install-ngnix.sh")
 
   tags = {
     Name = "terra-project"
@@ -29,6 +32,7 @@ output "ec2_public_dns" {
 resource "aws_security_group" "terra_project_sg" {
   name        = "terra-project-sg"
   description = "Security group for terra project"
+  vpc_id      = module.vpc.vpc_id
 
   ingress {
     from_port   = 22
@@ -38,10 +42,10 @@ resource "aws_security_group" "terra_project_sg" {
   }
 
   ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.lb_sg.id]
   }
 
   egress {

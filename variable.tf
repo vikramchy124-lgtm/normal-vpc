@@ -8,7 +8,7 @@ variable "ec2_instance_type" {
 variable "ec2_ami" {
     description = "The AMI ID to use for the EC2 instance"
     type        = string
-    default     = "ami-0b6d9d3d33ba97d99"
+    default     = "ami-0c02fb55956c7d316"
 }
 
 variable "root_storage_size" {

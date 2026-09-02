@@ -2,3 +2,6 @@
 *.tfstate
 *.tfstate.*
 .env
+terraform.tfstate.1788266926.backup
+terraform.tfstate.backup
+terraform.tfstate
