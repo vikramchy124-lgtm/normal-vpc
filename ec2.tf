@@ -1,6 +1,6 @@
 resource "aws_key_pair" "terra_project" {
   key_name   = "terra-project-key"
-  public_key = file("C:/Users/X/.ssh/id_ed25519.pub")
+  public_key = var.ssh_public_key
 }
 
 resource "aws_instance" "terra-project" {

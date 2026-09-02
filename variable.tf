@@ -16,3 +16,9 @@ variable "root_storage_size" {
     type        = number
     default     = 15
 }
+
+variable "ssh_public_key" {
+    description = "SSH public key used to access the EC2 instance"
+    type        = string
+    sensitive   = true
+}
